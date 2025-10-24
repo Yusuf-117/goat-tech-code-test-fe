@@ -1,8 +1,17 @@
 import { useState, useEffect } from 'react'
 import { api } from '../../lib/api'
 
-const CampaignTaskForm = ({ campaignId, editing, onSaved }: any) => {
-  const [form, setForm] = useState<any>({
+const CampaignTaskForm = ({
+  campaignId,
+  editing,
+  onSaved,
+}: {
+  campaignId: number
+  editing: Task | null
+  onSaved: () => void
+}) => {
+
+  const [form, setForm] = useState<Partial<Task>>({
     title: '',
     description: '',
     priority: 'medium',
@@ -91,7 +100,9 @@ const CampaignTaskForm = ({ campaignId, editing, onSaved }: any) => {
           <select
             className="rounded-lg border border-gray-600 bg-gray-700 px-3 py-2 text-sm text-gray-100 focus:ring-2 focus:ring-blue-400"
             value={form.priority}
-            onChange={(e) => setForm({ ...form, priority: e.target.value })}
+            onChange={(e) =>
+              setForm({ ...form, priority: e.target.value as Task['priority'] })
+            }
           >
             <option value="low">Low</option>
             <option value="medium">Medium</option>
@@ -104,7 +115,9 @@ const CampaignTaskForm = ({ campaignId, editing, onSaved }: any) => {
           <select
             className="rounded-lg border border-gray-600 bg-gray-700 px-3 py-2 text-sm text-gray-100 focus:ring-2 focus:ring-blue-400"
             value={form.status}
-            onChange={(e) => setForm({ ...form, status: e.target.value })}
+            onChange={(e) =>
+              setForm({ ...form, status: e.target.value as Task['status'] })
+            }
           >
             <option value="todo">To Do</option>
             <option value="in_progress">In Progress</option>

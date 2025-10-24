@@ -8,7 +8,7 @@ interface Campaign {
 interface Task {
   id: number
   title: string
-  status: string
-  priority: string
+  status: 'todo' | 'in_progress' | 'done'
+  priority: 'low' | 'medium' | 'high'
   [key: string]: any
 }

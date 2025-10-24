@@ -1,7 +1,7 @@
 const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000/api/v1'
 
 export const api = {
-    campaigns: async (id?: string) => {
+    campaigns: async (id?: Number) => {
         const url = id ? `${BASE_URL}/campaigns/${id}` : `${BASE_URL}/campaigns`
         const res = await fetch(url)
         if (!res.ok) throw new Error('Failed to fetch campaign(s)')
@@ -12,7 +12,7 @@ export const api = {
     // -------------- TASKS ( under campaign) ----------
     // GET /api/v1/campaigns/:campaign_id/tasks  => list
     // POST /api/v1/campaigns/:campaign_id/tasks => create
-    campaignTasks: async (campaignId: string, data?: any) => {
+    campaignTasks: async (campaignId: Number, data?: Partial<Task>) => {
         const url = `${BASE_URL}/campaigns/${campaignId}/tasks`
         const opts: RequestInit = data
             ? {
@@ -31,7 +31,7 @@ export const api = {
     // GET /api/v1/tasks/:id => show
     // PATCH /api/v1/tasks/:id => update
     // DELETE /api/v1/tasks/:id => destroy
-    task: async (id: string, data?: any, method: 'GET' | 'PATCH' | 'DELETE' = 'GET') => {
+    task: async (id: Number, data?: Partial<Task>, method: 'GET' | 'PATCH' | 'DELETE' = 'GET') => {
         const url = `${BASE_URL}/tasks/${id}`
         const opts: RequestInit =
           method === 'GET'

@@ -5,8 +5,8 @@ import CampaignTaskForm from '../campaigns/CampaignTaskForm'
 import { useTaskActions } from '../../hooks/useTaskActions'
 
 const Tasks = () => {
-  const [tasks, setTasks] = useState<any[]>([])
-  const [editing, setEditing] = useState<any | null>(null)
+  const [tasks, setTasks] = useState<Task[]>([])
+  const [editing, setEditing] = useState<Task | null>(null)
   const [isModalOpen, setModalOpen] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const { handleTaskStatusUpdate, handleTaskDelete } = useTaskActions(setTasks)
@@ -17,9 +17,9 @@ const Tasks = () => {
 
     // Fetch each campaign’s full data (to get its tasks)
     const results = await Promise.all(
-      campaigns.map(async (c: any) => {
+      campaigns.map(async (c: Campaign) => {
         const full = await api.campaigns(c.id)
-        return (full.campaign.tasks || []).map((t: any) => ({
+        return (full.campaign.tasks || []).map((t: Task) => ({
           ...t,
           campaign_name: full.name,
           campaign_id: full.id,

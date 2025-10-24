@@ -4,7 +4,7 @@ import { api } from '../../lib/api'
 
 export const Route = createFileRoute('/campaigns/$campaignId')({
   loader: async ({ params: { campaignId } }) => {
-    return api.campaigns(campaignId)
+    return api.campaigns(Number(campaignId))
   },
   component: CampaignComponent,
 })

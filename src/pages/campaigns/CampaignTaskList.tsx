@@ -6,8 +6,8 @@ const CampaignTaskList = ({
   onStatusUpdate,
   onDelete,
 }: {
-  tasks: any[]
-  onEdit: (task: any) => void
+  tasks: Task[]
+  onEdit: (task: Task) => void
   onStatusUpdate: (id: number) => void
   onDelete: (id: number) => void
 }) => {

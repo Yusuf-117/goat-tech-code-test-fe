@@ -5,11 +5,9 @@ import CampaignTaskForm from './CampaignTaskForm'
 import { useTaskActions } from '../../hooks/useTaskActions'
 
 
-
-
-const Campaign = ({ id, name, description, status }: any) => {
-  const [tasks, setTasks] = useState<any[]>([])
-  const [editing, setEditing] = useState<any | null>(null)
+const Campaign = ({ id, name, description, status }: Campaign) => {
+  const [tasks, setTasks] = useState<Task[]>([])
+  const [editing, setEditing] = useState<Task | null>(null)
   const [isModalOpen, setModalOpen] = useState(false)
 
   async function loadTasks() {

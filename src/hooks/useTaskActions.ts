@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-export function useTaskActions(setTasks: React.Dispatch<React.SetStateAction<any[]>>) {
+export function useTaskActions(setTasks: React.Dispatch<React.SetStateAction<Task[]>>) {
   const handleTaskStatusUpdate = useCallback((id: number) => {
     setTasks(prev => prev.map(t => (t.id === id ? { ...t, status: 'done' } : t)))
   }, [setTasks])
