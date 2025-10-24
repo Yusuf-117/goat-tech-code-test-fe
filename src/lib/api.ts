@@ -8,4 +8,43 @@ export const api = {
         return res.json()
     },
 
+
+    // -------------- TASKS ( under campaign) ----------
+    // GET /api/v1/campaigns/:campaign_id/tasks  => list
+    // POST /api/v1/campaigns/:campaign_id/tasks => create
+    campaignTasks: async (campaignId: string, data?: any) => {
+        const url = `${BASE_URL}/campaigns/${campaignId}/tasks`
+        const opts: RequestInit = data
+            ? {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            }
+            : {}
+
+        const res = await fetch(url, opts)
+        if (!res.ok) throw new Error(data ? 'Failed to create task' : 'Failed to fetch tasks')
+        return res.json()
+    },
+
+    // ---------- TASKS (directly on task) --------
+    // GET /api/v1/tasks/:id => show
+    // PATCH /api/v1/tasks/:id => update
+    // DELETE /api/v1/tasks/:id => destroy
+    task: async (id: string, data?: any, method: 'GET' | 'PATCH' | 'DELETE' = 'GET') => {
+        const url = `${BASE_URL}/tasks/${id}`
+        const opts: RequestInit =
+            method === 'GET'
+                ? {}
+                : {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: data ? JSON.stringify(data) : undefined,
+                }
+
+        const res = await fetch(url, opts)
+        if (!res.ok) throw new Error(`Failed to ${method === 'GET' ? 'fetch' : method.toLowerCase()} task`)
+        return res.json()
+    },
+
 }
