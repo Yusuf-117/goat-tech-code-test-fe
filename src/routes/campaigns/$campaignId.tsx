@@ -1,9 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
 import Campaign from '../../pages/campaigns/Campaign'
+import { api } from '../../lib/api'
 
 export const Route = createFileRoute('/campaigns/$campaignId')({
   loader: async ({ params: { campaignId } }) => {
-    return fetch(`http://localhost:3000/api/v1/campaigns/${campaignId}`).then(res => res.json())
+    return api.campaigns(campaignId)
   },
   component: CampaignComponent,
 })
