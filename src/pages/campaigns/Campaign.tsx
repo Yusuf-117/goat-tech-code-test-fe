@@ -20,7 +20,7 @@ const Campaign = ({ id, name, description, status }: any) => {
       )
     )
   }
-
+  
 
   useEffect(() => {
     if (id) loadTasks()
@@ -55,7 +55,7 @@ const Campaign = ({ id, name, description, status }: any) => {
           <h2 className="font-bold text-blue-200 mb-3">Campaign Tasks</h2>
           <CampaignTaskList
             tasks={tasks}
-            onEdit={(task) => {
+            onEdit={(task: Task) => {
               setEditing(task)
               setModalOpen(true)
             }}
