@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react'
 import { api } from '../../lib/api'
 import CampaignTaskList from './CampaignTaskList'
 import CampaignTaskForm from './CampaignTaskForm'
+import { useTaskActions } from '../../hooks/useTaskActions'
+
+
+
 
 const Campaign = ({ id, name, description, status }: any) => {
   const [tasks, setTasks] = useState<any[]>([])
@@ -13,13 +17,7 @@ const Campaign = ({ id, name, description, status }: any) => {
     setTasks(data.tasks)
   }
 
-  function handleTaskStatusUpdate(taskId: number) {
-    setTasks((prev) =>
-      prev.map((t) =>
-        t.id === taskId ? { ...t, status: 'done' } : t
-      )
-    )
-  }
+  const { handleTaskStatusUpdate, handleTaskDelete } = useTaskActions(setTasks)
   
 
   useEffect(() => {
@@ -60,6 +58,7 @@ const Campaign = ({ id, name, description, status }: any) => {
               setModalOpen(true)
             }}
             onStatusUpdate={handleTaskStatusUpdate}
+            onDelete={handleTaskDelete}
           />
         </section>
 

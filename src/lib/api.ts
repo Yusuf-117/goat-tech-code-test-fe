@@ -34,17 +34,21 @@ export const api = {
     task: async (id: string, data?: any, method: 'GET' | 'PATCH' | 'DELETE' = 'GET') => {
         const url = `${BASE_URL}/tasks/${id}`
         const opts: RequestInit =
-            method === 'GET'
-                ? {}
-                : {
-                    method,
-                    headers: { 'Content-Type': 'application/json' },
-                    body: data ? JSON.stringify(data) : undefined,
-                }
-
+          method === 'GET'
+            ? {}
+            : {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: data ? JSON.stringify(data) : undefined,
+              }
+      
         const res = await fetch(url, opts)
-        if (!res.ok) throw new Error(`Failed to ${method === 'GET' ? 'fetch' : method.toLowerCase()} task`)
-        return res.json()
-    },
+        if (!res.ok)
+          throw new Error(`Failed to ${method === 'GET' ? 'fetch' : method.toLowerCase()} task`)
+      
+        const text = await res.text()
+        return text ? JSON.parse(text) : {}
+      },
+      
 
 }
