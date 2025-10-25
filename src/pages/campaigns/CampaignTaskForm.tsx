@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { api } from '../../lib/api'
+import { getUsers } from '../../lib/userCache'
 
 const CampaignTaskForm = ({
   campaignId,
@@ -20,8 +21,11 @@ const CampaignTaskForm = ({
     assigned_to_id: null,
   })
   const [saving, setSaving] = useState(false)
+  const [users, setUsers] = useState<User[]>([])
 
   useEffect(() => {
+    getUsers().then(setUsers)
+
     if (editing) {
       setForm({
         title: editing.title || '',
@@ -143,9 +147,7 @@ const CampaignTaskForm = ({
 
         <div className="flex-1 flex flex-col gap-1">
           <label className="text-sm font-medium text-blue-200">Assigned To (User ID)</label>
-          <input
-            type="number"
-            min="1"
+          <select
             className="rounded-lg border border-gray-600 bg-gray-700 px-3 py-2 text-sm text-gray-100 focus:ring-2 focus:ring-blue-400"
             value={form.assigned_to_id ?? ''}
             onChange={(e) =>
@@ -154,8 +156,14 @@ const CampaignTaskForm = ({
                 assigned_to_id: e.target.value ? Number(e.target.value) : null,
               })
             }
-            placeholder="User ID"
-          />
+          >
+            <option value="">Unassigned</option>
+            {users.map((u) => (
+              <option key={u.id} value={u.id}>
+                {u.name}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 

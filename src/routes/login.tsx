@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
-import { api } from '../lib/api'
+import { getUsers } from '../lib/userCache'
 
 export const Route = createFileRoute('/login')({
   component: LoginPage,
@@ -12,8 +12,7 @@ function LoginPage() {
   const [selected, setSelected] = useState<string>('')
 
   useEffect(() => {
-    api.users().then((res) => setUsers(res.users)).catch(console.error)
-
+    getUsers().then(setUsers)
   }, [])
 
   function handleLogin(e: React.FormEvent) {

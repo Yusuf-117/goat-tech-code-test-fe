@@ -28,7 +28,7 @@ const TaskItem = ({
                         </>
                     )}
                 </div>
-                {task.assigned_to_name && (
+                {(task.assigned_to_name && task.status === "done") && (
                 <div className="text-gray-400 text-sm">
                     Completed by {task.assigned_to_name}
                 </div>

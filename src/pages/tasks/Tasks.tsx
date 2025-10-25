@@ -3,6 +3,8 @@ import { api } from '../../lib/api'
 import TaskList from '../../components/tasks/TaskList'
 import CampaignTaskForm from '../campaigns/CampaignTaskForm'
 import { useTaskActions } from '../../hooks/useTaskActions'
+import { getUsers } from '../../lib/userCache'
+
 
 const Tasks = () => {
   const [tasks, setTasks] = useState<Task[]>([])
@@ -10,14 +12,12 @@ const Tasks = () => {
   const [isModalOpen, setModalOpen] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const { handleTaskStatusUpdate, handleTaskDelete } = useTaskActions(setTasks)
+  const [users, setUsers] = useState<User[]>([])
 
-  async function loadAllTasks() {
+
+  async function loadAllTasks(users: User[]) {
     const resp = await api.campaigns()
     const campaigns = resp.campaigns || []
-
-    // Fetch all users once
-    const { users } = await api.users()
-
     // Fetch each campaign’s full data (to get its tasks)
     const results = await Promise.all(
       campaigns.map(async (c: Campaign) => {
@@ -36,10 +36,14 @@ const Tasks = () => {
   }
 
   useEffect(() => {
-    if (!loaded) {
-      loadAllTasks()
+    async function init() {
+      const u = await getUsers()
+      setUsers(u)
+      await loadAllTasks(u)
       setLoaded(true)
     }
+  
+    if (!loaded) init()
   }, [loaded])
 
   return (
@@ -89,7 +93,7 @@ const Tasks = () => {
               onSaved={() => {
                 setModalOpen(false)
                 setEditing(null)
-                loadAllTasks()
+                loadAllTasks(users)
               }}
             />
           </div>
