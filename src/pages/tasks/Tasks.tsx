@@ -15,14 +15,19 @@ const Tasks = () => {
     const resp = await api.campaigns()
     const campaigns = resp.campaigns || []
 
+    // Fetch all users once
+    const { users } = await api.users()
+
     // Fetch each campaign’s full data (to get its tasks)
     const results = await Promise.all(
       campaigns.map(async (c: Campaign) => {
         const full = await api.campaigns(c.id)
         return (full.campaign.tasks || []).map((t: Task) => ({
           ...t,
-          campaign_name: full.name,
-          campaign_id: full.id,
+          campaign_name: full.campaign.name,
+          campaign_id: full.campaign.id,
+          assigned_to_name:
+            users.find((u: any) => u.id === t.assigned_to_id)?.name || '',
         }))
       })
     )

@@ -28,6 +28,11 @@ const TaskItem = ({
                         </>
                     )}
                 </div>
+                {task.assigned_to_name && (
+                <div className="text-gray-400 text-sm">
+                    Completed by {task.assigned_to_name}
+                </div>
+                )}
             </div>
 
             <div className="flex gap-3 items-center">
@@ -41,7 +46,7 @@ const TaskItem = ({
                 {task.status !== 'done' && (
                     <button
                         onClick={async () => {
-                            await api.task(task.id, { status: 'done' }, 'PATCH')
+                            await api.task(task.id, { status: 'done', assigned_to_id: Number(localStorage.getItem('currentUser')) }, 'PATCH')
                             onStatusUpdate(task.id)
                         }}
                         className="text-sm text-green-300 hover:underline"
