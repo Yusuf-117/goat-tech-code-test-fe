@@ -38,7 +38,7 @@ const Tasks = () => {
   }, [loaded])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-blue-950 p-8 text-gray-200">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-blue-950 p-8 text-gray-200 mt-10">
       <div className="max-w-4xl mx-auto bg-gray-800/80 rounded-xl p-6 shadow-lg">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold text-blue-300">All Tasks</h1>
