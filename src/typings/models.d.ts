@@ -8,7 +8,12 @@ interface Campaign {
 interface Task {
   id: number
   title: string
+  description: string | null
   status: 'todo' | 'in_progress' | 'done'
   priority: 'low' | 'medium' | 'high'
-  [key: string]: any
+  due_date: string | null
+  campaign_id: number
+  created_by_id: number | null
+  assigned_to_id: number | null
 }
+

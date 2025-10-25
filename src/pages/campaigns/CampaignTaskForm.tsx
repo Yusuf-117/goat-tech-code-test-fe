@@ -17,7 +17,7 @@ const CampaignTaskForm = ({
     priority: 'medium',
     status: 'todo',
     due_date: '',
-    assigned_to_id: '',
+    assigned_to_id: null,
   })
   const [saving, setSaving] = useState(false)
 
@@ -29,7 +29,7 @@ const CampaignTaskForm = ({
         priority: editing.priority || 'medium',
         status: editing.status || 'todo',
         due_date: editing.due_date ? editing.due_date.slice(0, 10) : '',
-        assigned_to_id: editing.assigned_to_id || '',
+        assigned_to_id: editing.assigned_to_id || null,
       })
     } else {
       setForm({
@@ -38,7 +38,7 @@ const CampaignTaskForm = ({
         priority: 'medium',
         status: 'todo',
         due_date: '',
-        assigned_to_id: '',
+        assigned_to_id: null,
       })
     }
   }, [editing])
@@ -88,7 +88,7 @@ const CampaignTaskForm = ({
         <textarea
           className="w-full rounded-lg border border-gray-600 bg-gray-700 px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
           rows={3}
-          value={form.description}
+          value={form.description ?? ''}
           onChange={(e) => setForm({ ...form, description: e.target.value })}
           placeholder="Optional description..."
         />
@@ -133,7 +133,7 @@ const CampaignTaskForm = ({
           <input
             type="date"
             className="rounded-lg border border-gray-600 bg-gray-700 px-3 py-2 text-sm text-gray-100 focus:ring-2 focus:ring-blue-400"
-            value={form.due_date}
+            value={form.due_date ?? ''}
             onChange={(e) => setForm({ ...form, due_date: e.target.value })}
           />
         </div>
@@ -144,8 +144,13 @@ const CampaignTaskForm = ({
             type="number"
             min="1"
             className="rounded-lg border border-gray-600 bg-gray-700 px-3 py-2 text-sm text-gray-100 focus:ring-2 focus:ring-blue-400"
-            value={form.assigned_to_id}
-            onChange={(e) => setForm({ ...form, assigned_to_id: e.target.value })}
+            value={form.assigned_to_id ?? ''}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                assigned_to_id: e.target.value ? Number(e.target.value) : null,
+              })
+            }
             placeholder="User ID"
           />
         </div>
