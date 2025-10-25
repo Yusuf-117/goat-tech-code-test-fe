@@ -47,6 +47,8 @@ const CampaignTaskForm = ({
     e.preventDefault()
     setSaving(true)
 
+    const currentUser = localStorage.getItem('currentUser')
+
     const payload = {
       title: form.title,
       description: form.description || undefined,
@@ -54,7 +56,8 @@ const CampaignTaskForm = ({
       priority: form.priority,
       status: form.status,
       due_date: form.due_date || undefined,
-      assigned_to_id: form.assigned_to_id || undefined,
+      assigned_to_id: form.assigned_to_id || null,
+      ...(editing ? {} : { created_by_id: Number(currentUser) }),
     }
 
     try {

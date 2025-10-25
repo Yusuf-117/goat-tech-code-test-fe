@@ -17,3 +17,9 @@ interface Task {
   assigned_to_id: number | null
 }
 
+
+interface User {
+  id: number
+  name: string
+  email: string
+}

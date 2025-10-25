@@ -9,11 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TasksIndexRouteImport } from './routes/tasks/index'
 import { Route as CampaignsIndexRouteImport } from './routes/campaigns/index'
 import { Route as CampaignsCampaignIdRouteImport } from './routes/campaigns/$campaignId'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -37,12 +43,14 @@ const CampaignsCampaignIdRoute = CampaignsCampaignIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/campaigns/$campaignId': typeof CampaignsCampaignIdRoute
   '/campaigns': typeof CampaignsIndexRoute
   '/tasks': typeof TasksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/campaigns/$campaignId': typeof CampaignsCampaignIdRoute
   '/campaigns': typeof CampaignsIndexRoute
   '/tasks': typeof TasksIndexRoute
@@ -50,20 +58,28 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/campaigns/$campaignId': typeof CampaignsCampaignIdRoute
   '/campaigns/': typeof CampaignsIndexRoute
   '/tasks/': typeof TasksIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/campaigns/$campaignId' | '/campaigns' | '/tasks'
+  fullPaths: '/' | '/login' | '/campaigns/$campaignId' | '/campaigns' | '/tasks'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/campaigns/$campaignId' | '/campaigns' | '/tasks'
-  id: '__root__' | '/' | '/campaigns/$campaignId' | '/campaigns/' | '/tasks/'
+  to: '/' | '/login' | '/campaigns/$campaignId' | '/campaigns' | '/tasks'
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/campaigns/$campaignId'
+    | '/campaigns/'
+    | '/tasks/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoginRoute: typeof LoginRoute
   CampaignsCampaignIdRoute: typeof CampaignsCampaignIdRoute
   CampaignsIndexRoute: typeof CampaignsIndexRoute
   TasksIndexRoute: typeof TasksIndexRoute
@@ -71,6 +87,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -104,6 +127,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoginRoute: LoginRoute,
   CampaignsCampaignIdRoute: CampaignsCampaignIdRoute,
   CampaignsIndexRoute: CampaignsIndexRoute,
   TasksIndexRoute: TasksIndexRoute,

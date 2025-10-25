@@ -49,6 +49,11 @@ export const api = {
         const text = await res.text()
         return text ? JSON.parse(text) : {}
       },
-      
+
+      users: async () => {
+        const res = await fetch(`${BASE_URL}/users`)
+        if (!res.ok) throw new Error('Failed to fetch users')
+        return res.json()
+      },
 
 }
