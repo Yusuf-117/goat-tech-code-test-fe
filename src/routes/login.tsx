@@ -1,59 +1,52 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useState, useEffect } from 'react'
+import { createFileRoute } from '@tanstack/react-router'
+import { useEffect, useState } from 'react'
 import { getUsers } from '../lib/userCache'
 
-export const Route = createFileRoute('/login')({
-  component: LoginPage,
-})
-
-function LoginPage() {
-  const navigate = useNavigate()
+const LoginPage = () => {
   const [users, setUsers] = useState<User[]>([])
-  const [selected, setSelected] = useState<string>('')
+  const [selected, setSelected] = useState('')
 
   useEffect(() => {
     getUsers().then(setUsers)
   }, [])
 
-  function handleLogin(e: React.FormEvent) {
-    e.preventDefault()
+  const handleLogin = () => {
     if (!selected) return
+    const user = users.find(u => u.id === Number(selected))
     localStorage.setItem('currentUser', selected)
-    navigate({ to: '/' }) // redirect home
+    localStorage.setItem('currentUserName', user?.name || '')
+    window.location.href = '/'
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-blue-950 text-gray-100">
-      <form
-        onSubmit={handleLogin}
-        className="bg-gray-800/90 p-8 rounded-xl shadow-lg w-full max-w-sm space-y-4"
-      >
-        <h1 className="text-2xl font-bold text-blue-300 text-center">Login</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-blue-950">
+      <div className="bg-gray-800 p-6 rounded-xl w-full max-w-sm shadow-lg text-center">
+        <h2 className="text-xl font-bold text-blue-300 mb-4">Login</h2>
 
-        <div>
-          <label className="text-sm block mb-1 text-blue-200">Select User</label>
-          <select
-            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400"
-            value={selected}
-            onChange={(e) => setSelected(e.target.value)}
-          >
-            <option value="">-- Choose User --</option>
-            {users.map((u) => (
-              <option key={u.id} value={u.id}>
-                {u.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        <select
+          value={selected}
+          onChange={(e) => setSelected(e.target.value)}
+          className="w-full rounded-lg border border-gray-600 bg-gray-700 px-3 py-2 text-gray-100 mb-4"
+        >
+          <option value="">Select user...</option>
+          {users.map(u => (
+            <option key={u.id} value={u.id}>
+              {u.name}
+            </option>
+          ))}
+        </select>
 
         <button
-          type="submit"
-          disabled={!selected}
-          className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-60 text-white py-2 rounded-lg font-medium transition"
+          onClick={handleLogin}
+          className="w-full rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-500"
         >
-          Log In
+          Sign In
         </button>
-      </form>
+      </div>
     </div>
   )
 }
+
+export const Route = createFileRoute('/login')({
+  component: LoginPage,
+})
