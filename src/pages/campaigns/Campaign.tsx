@@ -12,8 +12,15 @@ const Campaign = ({ id, name, description, status }: Campaign) => {
 
   async function loadTasks() {
     const data = await api.campaignTasks(id)
-    setTasks(data.tasks)
+    const tasksWithMeta = (data.tasks || []).map((t: Task) => ({
+      ...t,
+      assigned_to_name: t.assigned_to?.name || '',
+    }))
+    setTasks(tasksWithMeta)
   }
+  
+
+  
 
   const { handleTaskStatusUpdate, handleTaskDelete } = useTaskActions(setTasks)
   

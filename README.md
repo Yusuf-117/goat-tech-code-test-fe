@@ -1,62 +1,97 @@
+````markdown
 # Goat Tech Code Test Frontend
 
-This project is built with [Vite](https://vitejs.dev/) and [TypeScript](https://www.typescriptlang.org/) using the React-TS template.
+This is my completed submission for the **Goat Developer Frontend Challenge**.  
+Built with **React (Vite + TypeScript)**, using **TanStack Router** and **TailwindCSS** for routing and styling.
+
+---
 
 ## Setup Instructions
 
-Follow these steps to get the project running on a new machine:
-
 ### 1. Prerequisites
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [npm](https://www.npmjs.com/) (bundled with Node.js)
 
-- [Node.js](https://nodejs.org/) (version 18 or higher)
-- [npm](https://www.npmjs.com/) (comes with Node.js)
-
-### 2. Clone the Repository
-
+### 2. Clone + Install
 ```bash
 git clone https://github.com/Ibex-CRM/goat-tech-code-test-fe.git
 cd goat-tech-code-test-fe
-```
-
-### 3. Install Dependencies
-
-```bash
 npm install
-```
+````
 
-### 4. Start the Development Server
+### 3. Run
 
 ```bash
 npm run dev
 ```
 
-This will start the Vite development server. Open [http://localhost:3001](http://localhost:3001) in your browser to view the app.
+App runs at [http://localhost:3001](http://localhost:3001).
+
+Make sure the backend is running at [http://localhost:3000](http://localhost:3000).
+
+---
+
+## Features
+
+* ✅ Create, read, update, and delete **tasks** within campaigns
+* ✅ Global task list with sorting by priority, status, and due date
+* ✅ Modal-based task creation/editing
+* ✅ Inline "Mark Done" updates
+* ✅ User assignment + caching
+* ✅ Simulated login (stores user in localStorage)
+* ✅ Restricted access to all routes unless logged in
+* ✅ Responsive UI built with TailwindCSS
+
+---
+
+## Sorting Logic
+
+Tasks are ordered by:
+
+1. **Incomplete high-priority** tasks first
+2. Then by **status** (`todo => in_progress => done`)
+3. Then by **due date** (closest first)
+
+---
 
 ## Project Structure
 
-- `src/` — Main source code (components, pages, assets, routes)
-- `public/` — Static assets
-- `vite.config.ts` — Vite configuration
-- `tsconfig.json` — TypeScript configuration
+```
+src/
+├── components/
+│   └── tasks/ (TaskItem, TaskList)
+├── hooks/
+│   └── useTaskActions.ts
+├── lib/
+│   ├── api.ts
+│   └── userCache.ts
+├── pages/
+│   ├── campaigns/
+│   │   ├── Campaign.tsx
+│   │   ├── CampaignTaskForm.tsx
+│   │   └── CampaignTaskList.tsx
+│   ├── tasks/Tasks.tsx
+│   └── login/Login.tsx
+├── routes/
+│   ├── __root.tsx
+│   ├── campaigns/
+│   │   ├── $campaignId.tsx
+│   │   └── index.tsx
+│   └── tasks/index.tsx
+└── typings/models.d.ts
+```
 
-## Your Mission
+---
 
-We need a task and campaign management app for our campaigns teams at Goat Agency. It's still missing vital features before it becomes useful. This is where you come in.
-We need you to make this into a functional task management app that allows team members to create, read and edit tasks related to a campaign. We also need a page that would list all tasks regardless of the campaign to see what we need to prioritise (sorting would be super useful here as well).
+## Notes
 
-Here's a list of features we need the application to have:
-- Ability to create, read and update tasks related to a specific campaign.
-- Ability to see all tasks in the system regardless of the campaign and the ability to edit them if needed.
-- Because campaigns may have a lot of tasks, it would be beneficial to have a way to sort the tasks based on when they're due, their priority and/or whether they've already been completed (uncompleted high priority tasks that require immediate attention would need to be at the top).
-- The application doesn't look like much right now, perhaps add some styling (don't worry too much about the composition of the styling, we are not testing your design skills here). Feel free to completely change existing styling as well if you so wish.
-- This code test is to be used in conjunction with the backend of this test, which you will be provided with. Completion of both is a requirement in order to pass the test.
+* Built with **Vite + TypeScript**
+* Routing via **TanStack Router (file-based)**
+* Styled using **TailwindCSS**
+* API base configurable via `VITE_API_BASE_URL`
+* Works with the Rails backend (`/api/v1/`)
 
-### Bonus Round
-- Now that we can create tasks, it would be useful to know who's responsible for completing them..
+---
 
-## Additional Notes
+**Stack:** React + Vite + TanStack Router + TailwindCSS + TypeScript
 
-- The project uses [TanStack Router](https://tanstack.com/router) for routing. Specifically we use file-based routing so make sure you read up on it before tackling the test.
-- Styling is handled with Tailwind CSS.
-- For any issues, please check your Node.js and npm versions, and ensure all dependencies are installed.
-- If you decide to work on the bonus round, note that there is no current user being set. We do not expect you to create a full login flow in order to satisfy a created_by requirement. Solve this issue however you see fit.

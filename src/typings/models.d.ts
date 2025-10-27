@@ -15,6 +15,7 @@ interface Task {
   campaign_id: number
   created_by_id: number | null
   assigned_to_id: number | null
+  assigned_to?: {name: string} | null
 }
 
 

@@ -3,7 +3,6 @@ import { api } from '../../lib/api'
 import TaskList from '../../components/tasks/TaskList'
 import CampaignTaskForm from '../campaigns/CampaignTaskForm'
 import { useTaskActions } from '../../hooks/useTaskActions'
-import { getUsers } from '../../lib/userCache'
 
 
 const Tasks = () => {
@@ -12,22 +11,20 @@ const Tasks = () => {
   const [isModalOpen, setModalOpen] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const { handleTaskStatusUpdate, handleTaskDelete } = useTaskActions(setTasks)
-  const [users, setUsers] = useState<User[]>([])
 
 
-  async function loadAllTasks(users: User[]) {
+  async function loadAllTasks() {
     const resp = await api.campaigns()
     const campaigns = resp.campaigns || []
     // Fetch each campaign’s full data (to get its tasks)
     const results = await Promise.all(
       campaigns.map(async (c: Campaign) => {
-        const full = await api.campaigns(c.id)
-        return (full.campaign.tasks || []).map((t: Task) => ({
+        const campaignTasks = await api.campaignTasks(c.id)
+        return (campaignTasks.tasks || []).map((t: Task) => ({
           ...t,
-          campaign_name: full.campaign.name,
-          campaign_id: full.campaign.id,
-          assigned_to_name:
-            users.find((u: any) => u.id === t.assigned_to_id)?.name || '',
+          campaign_name: c.name,
+          campaign_id: c.id,
+          assigned_to_name: t.assigned_to?.name || '',
         }))
       })
     )
@@ -36,14 +33,10 @@ const Tasks = () => {
   }
 
   useEffect(() => {
-    async function init() {
-      const u = await getUsers()
-      setUsers(u)
-      await loadAllTasks(u)
+    if (!loaded) {
+      loadAllTasks()
       setLoaded(true)
     }
-  
-    if (!loaded) init()
   }, [loaded])
 
   return (
@@ -93,7 +86,7 @@ const Tasks = () => {
               onSaved={() => {
                 setModalOpen(false)
                 setEditing(null)
-                loadAllTasks(users)
+                loadAllTasks()
               }}
             />
           </div>
